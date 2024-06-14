@@ -8,7 +8,7 @@ export function LaunchList() {
     const [launches, setLaunches] = useState([]);
 
     useEffect(() => {
-        API.getAllLaunches().then(setLaunches);
+        API.getAllLaunches().then(setLaunches).catch(console.error);
     }, []);
 
     return (
@@ -16,11 +16,15 @@ export function LaunchList() {
             <Heading as="h1" size="lg" m="4">
                 SpaceX Launches
             </Heading>
-            <section>
-                {launches.map(launch => (
-                    <LaunchItem key={launch.flight_number} {...launch} />
-                ))}
-            </section >
+            {launches.length === 0 ? (
+                <div>Loading...</div>
+            ) : (
+                <section>
+                    {launches.map(launch => (
+                        <LaunchItem key={launch.flight_number} {...launch} />
+                    ))}
+                </section >
+            )}
         </>
     );
 }
